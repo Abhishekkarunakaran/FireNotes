@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'app/shared/dependencies.dart';
 
 void main() async {
@@ -14,10 +16,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Notes',
-      // home: const SplashScreen(),
-      home: SignInScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_)=> SignInSignUpProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Notes',
+        // home: const SplashScreen(),
+        home: SignInScreen(),
+      ),
     );
   }
 }

@@ -138,29 +138,36 @@ class _SignInScreenState extends State<SignInScreen> {
                     SizedBox(
                       height: 40,
                     ),
-                    PrimaryButton(
-                      buttonColor: Colors.white,
-                      function: () {
-                        //TODO: Sign in with google
-                      },
-                      text: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Sign in with   ',
-                            style: TT.whiteButtonText,
-                          ),
-                          SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: Image.asset(
-                              'assets/img/google.png',
+                    Consumer<SignInSignUpProvider>(builder: (ctx, provider, _) {
+                      return PrimaryButton(
+                        isLoading: provider.isLoading,
+                        buttonColor: Colors.white,
+                        function: () {
+                          //TODO: Sign in with google
+                          provider.googleSignIn();
+                          if (provider.signedIn) {
+                            navigateToHome();
+                          }
+                        },
+                        text: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Sign in with   ',
+                              style: TT.whiteButtonText,
                             ),
-                          )
-                        ],
-                      ),
-                    )
+                            SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: Image.asset(
+                                'assets/img/google.png',
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    })
                   ],
                 ),
               ),
