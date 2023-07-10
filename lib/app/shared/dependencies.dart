@@ -8,11 +8,8 @@ export 'package:fire_notes/app/services/firebase_auth_service.dart';
 export 'package:google_sign_in/google_sign_in.dart';
 export 'package:provider/provider.dart';
 
-//Screens
-export '../screens/splash_screen.dart';
-export '../screens/signin_screen.dart';
-export '../screens/signup_screen.dart';
-export '../screens/home_screen.dart';
+// Screens/Routes
+export 'routes.dart';
 
 //Widgets
 export 'package:fire_notes/app/screens/widgets/text_field.dart';

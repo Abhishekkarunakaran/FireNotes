@@ -34,8 +34,8 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void navigateToHome() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    Navigator.pushReplacementNamed(
+        context,'/home');
   }
 
   @override
@@ -54,8 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   style: TT.swipeText,
                 ),
                 onRightSwipe: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => SignUpScreen()));
+                  Navigator.pushReplacementNamed(context,'/signup');
                 },
               )),
           Positioned(
@@ -141,7 +140,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Consumer<SignInSignUpProvider>(builder: (ctx, provider, _) {
                       return PrimaryButton(
                         isLoading: provider.isLoading,
-                        buttonColor: Colors.white,
+                        buttonColor: Color(0x22FFFFFF),
                         function: () {
                           //TODO: Sign in with google
                           provider.googleSignIn();

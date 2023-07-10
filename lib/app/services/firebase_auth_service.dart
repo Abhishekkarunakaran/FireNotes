@@ -51,7 +51,6 @@ class FirebaseAuthService {
     FirebaseAuth auth = FirebaseAuth.instance;
 
     try {
-
       //code to get the google credentials from the user
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -73,5 +72,10 @@ class FirebaseAuthService {
       log(e.toString());
       return false;
     }
+  }
+
+  static Future<void> signOut(context) async {
+    await FirebaseAuth.instance.signOut().then((value) => Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false));
+
   }
 }

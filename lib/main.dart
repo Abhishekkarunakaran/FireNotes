@@ -22,8 +22,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Notes',
-        // home: const SplashScreen(),
-        home: SignInScreen(),
+        routes: routes,
+        // initialRoute: '/',
+        initialRoute: '/home',
       ),
     );
   }

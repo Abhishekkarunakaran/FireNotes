@@ -29,8 +29,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void navigateToHome() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    Navigator.pushReplacementNamed(
+        context,'/home');
   }
 
   @override
@@ -50,8 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: TT.swipeText,
                 ),
                 onLeftSwipe: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => SignInScreen()));
+                  Navigator.pushReplacementNamed(context,'/signin');
                 },
               )),
           Positioned(
