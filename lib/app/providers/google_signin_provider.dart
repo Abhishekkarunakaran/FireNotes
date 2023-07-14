@@ -1,11 +1,14 @@
 import 'package:fire_notes/app/shared/dependencies.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignInSignUpProvider extends ChangeNotifier {
   bool isLoading = false;
 
   bool signedIn = false;
 
-  void googleSignIn() async {
+  User? user;
+
+  Future<void> googleSignIn() async {
     isLoading = true;
     notifyListeners();
 
@@ -15,3 +18,4 @@ class SignInSignUpProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+

@@ -1,7 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'package:firebase_auth/firebase_auth.dart';
-
 import 'app/shared/dependencies.dart';
 
 void main() async {
@@ -23,8 +20,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Notes',
         routes: routes,
-        // initialRoute: '/',
-        initialRoute: '/home',
+        initialRoute: '/',
       ),
     );
   }

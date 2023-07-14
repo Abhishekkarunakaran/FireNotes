@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "960809307423-9ab4caitoo8dqi4ik174ovl4khd2bd2h.apps.googleusercontent.com",
+          "client_id": "960809307423-j0gd5t07eite1oukvtnav8ndrgv89kkq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fire_notes",
+            "certificate_hash": "f104b74ed56c1538f17df9fb7bfa3b2b741119c3"
+          }
+        },
+        {
+          "client_id": "960809307423-so5ks0skmdb3078fc5jnr5gh9bdsfjsr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +37,13 @@
             {
               "client_id": "960809307423-9ab4caitoo8dqi4ik174ovl4khd2bd2h.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "960809307423-oqstu5n0imqfohai8f9trf1kjm4t4ro3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fireNotes.RunnerTests"
+              }
             }
           ]
         }

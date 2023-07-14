@@ -1,9 +1,13 @@
 import 'dart:developer';
 
 import 'package:fire_notes/app/shared/dependencies.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 
 class FirebaseAuthService {
+  // Stream<String> get onAuthStateChanged =>
+  //     FirebaseAuth.instance.authStateChanges().listen(
+  //           (user) => user?.uid,
+  //     );
   static Future<bool> signInWithEmailAndPassword({
     required String email,
     required String password,
@@ -75,7 +79,47 @@ class FirebaseAuthService {
   }
 
   static Future<void> signOut(context) async {
-    await FirebaseAuth.instance.signOut().then((value) => Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false));
+    User? user = FirebaseAuth.instance.currentUser;
+    for (UserInfo userInfo in user!.providerData) {
+      if (userInfo.providerId == 'google.com') {
+        await GoogleSignIn().signOut().then(
+            (value) => Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (route) => false), onError: (e) {
+          log("Error in signing out from google account: $e");
+        });
+      } else {
+        await FirebaseAuth.instance.signOut().then(
+            (value) => Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/',
+                  (route) => false,
+                ), onError: (e) {
+          log("Error in signing out from email and password : $e");
+        });
+      }
+    }
+  }
 
+  static void checkAuthStatus(context) {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (user != null) {
+        log("------- uid ----------");
+        log(user.uid);
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        Navigator.pushReplacementNamed(context, '/signin');
+      }
+    });
+  }
+
+  static String? getUserId() {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      log(user.uid);
+      return user.uid;
+    }
+    return null;
   }
 }

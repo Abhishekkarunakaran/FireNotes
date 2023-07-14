@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_notes/app/shared/dependencies.dart';
 import 'package:fire_notes/app/theme/text_color_theme.dart';
 
@@ -8,20 +10,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List noteList = [
-      r"I'm trying to create a dynamic link in Firebase, when I'm selecting the android app, it shows an error saying Add SHA-1 to this android app, I've already added a credential, but I'm not sure how exactly do I add SHA-1 to the app",
-      r"Check this to get SHA-1 key from your android studio and add it to your firebase project –",
-      r"Now, you will see BUILD SUCCESSFUL in the Run window that you can open from bottom just scroll that window upward and you will find your SHA1 key there. Add this key to firebase",
-      r"I'm trying to create a dynamic link in Firebase, when I'm selecting the android app, it shows an error saying Add SHA-1 to this android app, I've already added a credential, but I'm not sure how exactly do I add SHA-1 to the app",
-      r"Check this to get SHA-1 key from your android studio and add it to your firebase project –",
-      r"Now, you will see BUILD SUCCESSFUL in the Run window that you can open from bottom just scroll that window upward and you will find your SHA1 key there. Add this key to firebase",
-      r"I'm trying to create a dynamic link in Firebase, when I'm selecting the android app, it shows an error saying Add SHA-1 to this android app, I've already added a credential, but I'm not sure how exactly do I add SHA-1 to the app",
-      r"Check this to get SHA-1 key from your android studio and add it to your firebase project –",
-      r"Now, you will see BUILD SUCCESSFUL in the Run window that you can open from bottom just scroll that window upward and you will find your SHA1 key there. Add this key to firebase",
-      r"I'm trying to create a dynamic link in Firebase, when I'm selecting the android app, it shows an error saying Add SHA-1 to this android app, I've already added a credential, but I'm not sure how exactly do I add SHA-1 to the app",
-      r"Check this to get SHA-1 key from your android studio and add it to your firebase project –",
-      r"Now, you will see BUILD SUCCESSFUL in the Run window that you can open from bottom just scroll that window upward and you will find your SHA1 key there. Add this key to firebase",
-    ];
+    // NoteProvider provider = Provider.of<NoteProvider>(context,listen: false);
+
+    // List noteList = provider.getNotes();
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
     return Scaffold(
       backgroundColor: CT.black,
       body: Stack(children: [
@@ -48,33 +41,64 @@ class HomeScreen extends StatelessWidget {
         ),
         Positioned.fill(
           top: 100,
+          bottom: 10,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal:20.0),
-            child: SizedBox(
-              height: 500,
-              child: SingleChildScrollView(
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: noteList.length,
-                  itemBuilder: (ctx, i) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: CT.noteCard),
-                      padding: EdgeInsets.all(15),
-                      child: Text(
-                        noteList[i],
-                        maxLines: 6,
-                        style: TT.noteCardStyle,
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: SingleChildScrollView(
+              child: StreamBuilder(
+                  stream: NoteServices.getFireStoreStream(),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> streamSnap) {
+                    if (streamSnap.hasError) {
+                      return Center(
+                        child: Text(
+                          'Some error occurred',
+                          style: TT.noNotes,
+                        ),
+                      );
+                    }
+                    if (streamSnap.hasData) {
+                      log(streamSnap.data!.docs.length.toString());
+                      if (streamSnap.data!.docs.isEmpty) {
+                        return Center(
+                          child: Text(
+                            'No notes found',
+                            style: TT.noNotes,
+                          ),
+                        );
+                      }
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: streamSnap.data!.docs.length,
+                        itemBuilder: (ctx, i) {
+                          final DocumentSnapshot docSnap =
+                              streamSnap.data!.docs[i];
+                          return NoteCard(
+                            title: docSnap['title'],
+                            content: docSnap['content'],
+                            onPressed: () {
+                              //TODO: To add the edit a note functionality
+                              log("Pressed on the note card,$i");
+                              Navigator.pushNamed(context, '/note',
+                                  arguments: {'isExisting': true, 'title': docSnap['title'],'content':docSnap['content'],
+                                  'docId': docSnap.id
+
+                                  });
+                            },
+                          );
+                        },
+                        separatorBuilder: (ctx, _) => SizedBox(
+                          height: 15,
+                        ),
+                      );
+                    }
+
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: CT.primary,
                       ),
                     );
-                  },
-                  separatorBuilder: (ctx, _) => SizedBox(
-                    height: 15,
-                  ),
-                ),
-              ),
+                  }),
             ),
           ),
         )
@@ -83,6 +107,9 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: CT.primary,
           onPressed: () {
             //TODO: Add new notes functionality
+            Navigator.pushNamed(context, '/note', arguments: {
+              'isExisting': false,
+            });
           },
           child: Center(
               child: Icon(

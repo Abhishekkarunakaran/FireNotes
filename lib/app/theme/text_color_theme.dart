@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import '../shared/dependencies.dart';
 
 class CT {
@@ -19,8 +21,32 @@ class TT {
       fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white);
 
   static TextStyle noteCardStyle = GoogleFonts.montserrat(
-    fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white
+      fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white);
+
+  static TextStyle noteCardTitle = GoogleFonts.montserrat(
+    fontSize: 15, fontWeight:FontWeight.w500, color: Colors.white
   );
+
+  static TextStyle titleHint = GoogleFonts.montserrat(
+      fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF666666));
+
+  static TextStyle contentHint = GoogleFonts.montserrat(
+      fontSize: 15, fontWeight: FontWeight.normal, color: Color(0xFF666666));
+
+  static TextStyle titleStyle = GoogleFonts.montserrat(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
+  );
+
+  static TextStyle contentStyle = GoogleFonts.montserrat(
+    fontSize: 15,
+    fontWeight: FontWeight.normal,
+    color: Colors.white,
+  );
+
+  static TextStyle noNotes = GoogleFonts.montserrat(
+      fontSize: 20, fontWeight: FontWeight.w600, color: Color(0xFF666666));
 }
 
 class WT {

@@ -141,9 +141,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       return PrimaryButton(
                         isLoading: provider.isLoading,
                         buttonColor: Color(0x22FFFFFF),
-                        function: () {
+                        function: () async {
                           //TODO: Sign in with google
-                          provider.googleSignIn();
+                          await provider.googleSignIn();
                           if (provider.signedIn) {
                             navigateToHome();
                           }
