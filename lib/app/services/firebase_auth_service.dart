@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:fire_notes/app/shared/dependencies.dart';
 
-
 class FirebaseAuthService {
   // Stream<String> get onAuthStateChanged =>
   //     FirebaseAuth.instance.authStateChanges().listen(
@@ -79,23 +78,16 @@ class FirebaseAuthService {
   }
 
   static Future<void> signOut(context) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    for (UserInfo userInfo in user!.providerData) {
-      if (userInfo.providerId == 'google.com') {
-        await GoogleSignIn().signOut().then(
-            (value) => Navigator.of(context)
-                .pushNamedAndRemoveUntil('/', (route) => false), onError: (e) {
-          log("Error in signing out from google account: $e");
-        });
-      } else {
-        await FirebaseAuth.instance.signOut().then(
-            (value) => Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/',
-                  (route) => false,
-                ), onError: (e) {
-          log("Error in signing out from email and password : $e");
-        });
-      }
+    try {
+      // logout from both google signin and email/password signin
+      await GoogleSignIn().signOut();
+      await FirebaseAuth.instance.signOut();
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/',
+        (route) => false,
+      );
+    } catch (e) {
+      log("Error in logging out: $e");
     }
   }
 
