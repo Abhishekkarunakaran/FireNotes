@@ -9,6 +9,8 @@ export 'package:fire_notes/app/services/note_services.dart';
 export 'package:google_sign_in/google_sign_in.dart';
 export 'package:provider/provider.dart';
 export 'package:firebase_auth/firebase_auth.dart';
+export 'package:cloud_firestore/cloud_firestore.dart';
+
 
 // Screens/Routes
 export 'routes.dart';
@@ -18,6 +20,7 @@ export 'package:fire_notes/app/screens/widgets/text_field.dart';
 export 'package:fire_notes/app/screens/widgets/pwd_field.dart';
 export 'package:fire_notes/app/screens/widgets/primary_button.dart';
 export 'package:fire_notes/app/screens/widgets/note_card.dart';
+export 'package:fire_notes/app/screens/widgets/note_textfield.dart';
 
 //ScreenSize
 export 'package:fire_notes/app/shared/size.dart';

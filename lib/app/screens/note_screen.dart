@@ -19,6 +19,8 @@ class NoteScreen extends StatefulWidget {
 class _NoteScreenState extends State<NoteScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController contentController = TextEditingController();
+  // late DateTime editedDateTime;
+  String editedDateTime = '';
 
   @override
   void dispose() {
@@ -34,6 +36,7 @@ class _NoteScreenState extends State<NoteScreen> {
     if (arguments['isExisting']) {
       titleController.text = arguments['title'];
       contentController.text = arguments['content'];
+      editedDateTime = arguments['editedDateTime'];
     }
     return SafeArea(
       child: Scaffold(
@@ -53,15 +56,15 @@ class _NoteScreenState extends State<NoteScreen> {
                           'content': contentController.text,
                           'updatedAt': DateTime.now()
                         });
-                        Navigator.pop(context);
                       }
-                    } else {
+                    } else if (titleController.text.isNotEmpty ||
+                        contentController.text.isNotEmpty) {
                       NoteServices.addNote(
                         titleController.text,
                         contentController.text,
                       );
-                      Navigator.pop(context);
                     }
+                    Navigator.pop(context);
                   },
                   icon: Icon(
                     Icons.arrow_back,
@@ -98,43 +101,35 @@ class _NoteScreenState extends State<NoteScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //Title field
-                  TextField(
+                  NoteTakingTextField(
                     controller: titleController,
-                    style: TT.titleStyle,
-                    cursorColor: CT.primary,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: 'Title',
-                      hintStyle: TT.titleHint,
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    ),
+                    textStyle: TT.titleStyle,
+                    hintText: 'Title',
+                    hintStyle: TT.titleHint,
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  TextField(
-                    controller: contentController,
-                    style: TT.contentStyle,
-                    maxLines: null,
-                    cursorColor: CT.primary,
-                    decoration: InputDecoration(
-                        hintText: 'note',
-                        hintStyle: TT.contentHint,
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5)),
-                  )
+                  // Content field
+                  NoteTakingTextField(
+                      controller: contentController,
+                      textStyle: TT.contentStyle,
+                      hintStyle: TT.contentHint,
+                      hintText: 'note'),
                 ],
               )),
             ),
           )
         ]),
+        bottomNavigationBar: Visibility(
+          visible: editedDateTime != '',
+          child: SizedBox(
+            height: 30,
+            child: Center(
+              child: Text('Edited $editedDateTime',style: TextStyle(color: Colors.white54),),
+            ),
+          ),
+        ),
       ),
     );
   }

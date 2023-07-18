@@ -10,9 +10,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // NoteProvider provider = Provider.of<NoteProvider>(context,listen: false);
-
-    // List noteList = provider.getNotes();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
 
     return Scaffold(
@@ -71,19 +68,21 @@ class HomeScreen extends StatelessWidget {
                         physics: BouncingScrollPhysics(),
                         itemCount: streamSnap.data!.docs.length,
                         itemBuilder: (ctx, i) {
-                          final DocumentSnapshot docSnap =
-                              streamSnap.data!.docs[i];
+                          final Map<String,dynamic> docSnap =
+                              streamSnap.data!.docs[i].data() as Map<String,dynamic>;
                           return NoteCard(
                             title: docSnap['title'],
                             content: docSnap['content'],
                             onPressed: () {
-                              //TODO: To add the edit a note functionality
-                              log("Pressed on the note card,$i");
-                              Navigator.pushNamed(context, '/note',
-                                  arguments: {'isExisting': true, 'title': docSnap['title'],'content':docSnap['content'],
-                                  'docId': docSnap.id
-
-                                  });
+                              Navigator.pushNamed(context, '/note', arguments: {
+                                'isExisting': true,
+                                'title': docSnap['title'],
+                                'content': docSnap['content'],
+                                'docId': streamSnap.data!.docs[i].id,
+                                'editedDateTime': NoteServices.processDate(
+                                  docSnap.containsKey('updatedAt')? docSnap['updatedAt']:docSnap['createdAt']
+                                ),
+                              });
                             },
                           );
                         },
@@ -106,7 +105,6 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           backgroundColor: CT.primary,
           onPressed: () {
-            //TODO: Add new notes functionality
             Navigator.pushNamed(context, '/note', arguments: {
               'isExisting': false,
             });
